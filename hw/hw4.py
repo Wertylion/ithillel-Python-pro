@@ -28,7 +28,7 @@ class Order:
 
     def add_product(self, product):
         self.products.append(product)
-        self.total_price += product.price
+        self.total_price += product.price * product.quantity
 
     def calculate_total_price(self):
         return self.total_price
@@ -36,7 +36,7 @@ class Order:
 
 products = []
 customers = []
-
+order = Order()
 
 with open('hw4list.txt', "r", encoding="utf-8") as file:
 
@@ -49,10 +49,11 @@ with open('hw4list.txt', "r", encoding="utf-8") as file:
             price = int(parts[3])
             quantity = int(parts[4])
 
+
             product = Product(name, category, price, quantity)
 
             products.append(product)
-
+            order.add_product(product)
 
         elif parts[0] == 'customer':
             name = parts[1]
@@ -70,3 +71,4 @@ for customer in customers:
 print('-----Товар----')
 for product in products:
     print(f'Product: {product.name}, Category: {product.category}, Price: {product.price}$, Quantity: {product.quantity}')
+print(f'Total price: {order.total_price}$')
