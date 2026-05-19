@@ -1,0 +1,4 @@
+product;Ведмедик;м'яка іграшка;500;10
+product;Конструктор;конструктор;1200;5
+customer;Дмитро;dmytro@gmail.com
+customer;Іван;ivan@gmail.com
