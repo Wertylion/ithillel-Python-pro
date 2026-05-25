@@ -1,4 +1,8 @@
-product;Ведмедик;м'яка іграшка;500;10
-product;Конструктор;конструктор;1200;5
-customer;Дмитро;dmytro@gmail.com
-customer;Іван;ivan@gmail.com
+product;Плюшевий ведмедик;м'яка іграшка;350;25
+product;Лисиця Фокс;м'яка іграшка;420;18
+product;LEGO City Поліція;конструктор;1250;12
+customer;Олена Коваленко;olena.kovalenko@gmail.com
+customer;Михайло Петренко;mykhailo.petrenko@ukr.net
+order;Олена Коваленко;Плюшевий ведмедик;2
+order;Михайло Петренко;LEGO City Поліція;2
+order;Михайло Петренко;Лисиця Фокс;1

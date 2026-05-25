@@ -12,63 +12,82 @@ class Product:
         self.quantity = new_quantity
 
 
+class Order:
+    def __init__(self):
+        self.products = []
+
+    def add_product(self, product, qty):
+        if qty > product.quantity:
+            print(f"Недостатньо товару '{product.name}'")
+            return
+        product.quantity -= qty
+        self.products.append({"product": product, "qty": qty})
+
+    def calculate_total_price(self):
+        total = 0
+        for item in self.products:
+            total += item["product"].price * item["qty"]
+        return total
+
+
 class Customer:
     def __init__(self, name, email):
         self.name = name
         self.email = email
         self.orders = []
 
-    def add_order(self, order):
+    def add_order(self):
+        order = Order()
         self.orders.append(order)
-
-class Order:
-    def __init__(self):
-        self.products = []
-        self.total_price = 0
-
-    def add_product(self, product):
-        self.products.append(product)
-        self.total_price += product.price * product.quantity
-
-    def calculate_total_price(self):
-        return self.total_price
+        return order
 
 
 products = []
 customers = []
-order = Order()
 
 with open('hw4list.txt', "r", encoding="utf-8") as file:
-
     for line in file:
         parts = line.strip().split(";")
 
         if parts[0] == 'product':
-            name = parts[1]
-            category = parts[2]
-            price = int(parts[3])
-            quantity = int(parts[4])
-
-
-            product = Product(name, category, price, quantity)
-
+            product = Product(parts[1], parts[2], int(parts[3]), int(parts[4]))
             products.append(product)
-            order.add_product(product)
 
         elif parts[0] == 'customer':
-            name = parts[1]
-            email = parts[2]
-
-            customer = Customer(name, email)
-
+            customer = Customer(parts[1], parts[2])
             customers.append(customer)
 
+        elif parts[0] == 'order':
+            customer_name, product_name, qty = parts[1], parts[2], int(parts[3])
 
-print('-----Клієнти----')
+            customer = None
+            for c in customers:
+                if c.name == customer_name:
+                    customer = c
+                    break
+
+            product = None
+            for p in products:
+                if p.name == product_name:
+                    product = p
+                    break
+
+            if customer is None:
+                print(f"Клієнта '{customer_name}' не знайдено")
+                continue
+            if product is None:
+                print(f"Товар '{product_name}' не знайдено")
+                continue
+
+            order = customer.add_order()
+            order.add_product(product, qty)
+
+
+print('-----Клієнти-----')
 for customer in customers:
-    print(f'Name: {customer.name}, Email: {customer.email}')
+    total = sum(o.calculate_total_price() for o in customer.orders)
+    print(f'Name: {customer.name}, Email: {customer.email}, Orders: {len(customer.orders)}, Total: {total} грн')
 
-print('-----Товар----')
+print('\n-----Товари-----')
 for product in products:
-    print(f'Product: {product.name}, Category: {product.category}, Price: {product.price}$, Quantity: {product.quantity}')
-print(f'Total price: {order.total_price}$')
+    print(f'Product: {product.name}, Category: {product.category}, Price: {product.price} $, Stock: {product.quantity}')
